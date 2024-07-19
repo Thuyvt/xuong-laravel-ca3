@@ -66,9 +66,23 @@
                                 <td>{{$item->price}}</td>
                                 <td>{{$item->price_sale}}</td>
                                 <td>{{$item->category->name}}</td>
-                                <td>{{$item->img_thumb}}</td>
-                                <td>{{$item->is_active}}</td>
-                                <td></td>
+                                <td>
+                                    <div style="width: 100px;height: 100px;">
+                                        <img src="{{$item->img_thumb}}" alt="" style="max-width: 100%; max-height: 100%">
+                                    </div>
+                                </td>
+                                <td>
+                                    {!! $item->is_active ? '<span class="badge bg-success text-white">Hoạt động</span>'
+                                    : '<span class="badge bg-danger text-white">Không hoạt động</span>'!!}
+                                </td>
+                                <td class="d-flex">
+                                    <a href="{{route('admin.products.show', $item)}}" class="btn btn-info mr-3">Xem</a>
+                                    <a href="{{route('admin.products.edit', $item)}}" class="btn btn-success mr-3">Sửa</a>
+                                    <form action="{{route('admin.products.destroy', $item)}}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger">Xóa</button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\ProductColor;
+use App\Models\ProductSize;
 
 class ProductController extends Controller
 {
@@ -24,8 +27,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view(self::PATH_VIEW.__FUNCTION__);
-
+        $categories = Category::query()->pluck('name', 'id')->all();
+        $sizes = ProductSize::query()->pluck('name', 'id')->all();
+        $colors = ProductColor::query()->pluck('name', 'id')->all();
+        return view(self::PATH_VIEW.__FUNCTION__, compact('categories', 'sizes', 'colors'));
     }
 
     /**
@@ -33,7 +38,7 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        dd($request->all());
     }
 
     /**

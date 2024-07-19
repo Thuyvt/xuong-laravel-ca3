@@ -20,6 +20,7 @@
     <!-- Custom styles for this template-->
     <link href="{{asset('theme/admin/css/sb-admin-2.min.css')}}" rel="stylesheet">
 
+
     @yield('style-libs')
 </head>
 
@@ -113,6 +114,7 @@
 <script src="{{asset('theme/admin/js/demo/chart-area-demo.js')}}"></script>
 <script src="{{asset('theme/admin/js/demo/chart-pie-demo.js')}}"></script>
 
+<script src="https://kit.fontawesome.com/be9ed8669f.js" crossorigin="anonymous"></script>
 @yield('script-libs')
 
 </body>
