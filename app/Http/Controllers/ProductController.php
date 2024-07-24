@@ -52,43 +52,28 @@ class ProductController extends Controller
         if (!empty($request->hasFile('img_thumb'))) {
             $data['img_thumb'] = Storage::put('products', $request->file('img_thumb'));
         }
-        // xử lý dữ liệu variant
-        $listProVariants = $request->product_variants;
-        $dataProVariants = [];
-        foreach ($listProVariants as $item) {
-            $dataProVariants[] = [
-                'product_size_id' => $item['size'],
-                'product_color_id' => $item['color'],
-                'image' => !empty($item['image']) ? Storage::put('product_variants', $item['image']) : '',
-                'quantity' => !empty($item['quantity']) ? !empty($item['quantity']) : 0,
-                'price' => !empty($item['price']) ? !empty($item['price']) : 0,
-            ];
-        }
-
-        // xử lý dữ liệu product_galleries
-        $listProGalleries = $request->product_galleries ?: [];
-        $dataProGalleries = [];
-        foreach ($listProGalleries as $image) {
-            if(!empty($image)) {
-                $dataProGalleries[] = [
-                    'image' => Storage::put('product_galleries', $image)
-                ];
-            }
-        }
 
         try {
             DB::beginTransaction();
             // tạo dữ liệu bảng product
             $product = Product::query()->create($data);
             // tạo dữ liệu cho bảng product variants
-            foreach ($dataProVariants as $item) {
-                $item += ['product_id'=> $product->id];
-                ProductVariant::query()->create($item);
+            foreach ($request->product_variants as $item) {
+                ProductVariant::query()->create([
+                    'product_size_id' => $item['size'],
+                    'product_color_id' => $item['color'],
+                    'image' => !empty($item['image']) ? Storage::put('product_variants', $item['image']) : '',
+                    'quantity' => !empty($item['quantity']) ? !empty($item['quantity']) : 0,
+                    'price' => !empty($item['price']) ? !empty($item['price']) : 0,
+                    'product_id'=> $product->id
+                ]);
             }
             // tạo dữ liệu cho bảng product gallery
-            foreach ($dataProGalleries as $item) {
-                $item += ['product_id' => $product->id];
-                ProductGallery::query()->create($item);
+            foreach ($request->product_galleries as $item) {
+                ProductGallery::query()->create([
+                    'image' => Storage::put('product_galleries', $item),
+                    'product_id' => $product->id
+                ]);
             }
             DB::commit();
             return redirect()->route('admin.products.index');
