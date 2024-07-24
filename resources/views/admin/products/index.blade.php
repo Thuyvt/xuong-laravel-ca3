@@ -68,7 +68,12 @@
                                 <td>{{$item->category->name}}</td>
                                 <td>
                                     <div style="width: 100px;height: 100px;">
-                                        <img src="{{$item->img_thumb}}" alt="" style="max-width: 100%; max-height: 100%">
+                                        @if(str_contains($item->img_thumb, 'products/'))
+                                            <img src="{{Storage::url($item->img_thumb)}}" alt="" style="max-width: 100%; max-height: 100%">
+
+                                        @else
+                                            <img src="{{$item->img_thumb}}" alt="" style="max-width: 100%; max-height: 100%">
+                                        @endif
                                     </div>
                                 </td>
                                 <td>

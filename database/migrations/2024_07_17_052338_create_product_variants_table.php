@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignIdFor(Product::class)->constrained();
             $table->foreignIdFor(ProductSize::class)->constrained();
             $table->foreignIdFor(ProductColor::class)->constrained();
-            $table->string('image');
-            $table->integer('quantity');
+            $table->string('image')->nullable();
+            $table->integer('quantity')->default(0);
             $table->float('price');
             $table->timestamps();
 

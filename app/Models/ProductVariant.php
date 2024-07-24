@@ -17,4 +17,5 @@ class ProductVariant extends Model
         'quantity',
         'price'
     ];
+
 }
