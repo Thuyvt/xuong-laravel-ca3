@@ -8,12 +8,17 @@
                             <a href="#!">
                                 <span class="badge badge-primary">
                                 </span>
-                                <img src="{{$item->img_thumb}}" alt="" class="card-img-top rounded-0">
+                                @if(str_contains($item->img_thumb, 'products/'))
+                                    <img src="{{Storage::url($item->img_thumb)}}" alt="" class="card-img-top rounded-0">
+                                @else
+                                    <img src="{{$item->img_thumb}}" alt="" class="card-img-top rounded-0">
+                                @endif
                                 <div class="card-body">
-                                    <h4 class="text-uppercase mb-3">smart watch</h4>
-                                    <p class="h4 text-muted font-weight-light mb-3">Lip Gloss</p>
-                                    <p class="h4">$25.00</p>
+                                    <h4 class="text-uppercase mb-3">{{$item->name}}</h4>
+                                    <p class="h4 text-muted font-weight-light mb-3">{{$item->category->name}}</p>
+                                    <p class="h4">{{$item->price_sale ?: $item->price}}</p>
                                 </div>
+                                <a href="{{route('product.detail', $item->slug)}}" class="btn btn-primary">Xem chi tiết</a>
                             </a>
                         </div>
                 </div>

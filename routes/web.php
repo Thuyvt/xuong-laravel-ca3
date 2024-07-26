@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +16,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $products = Product::query()->latest('id')->limit(30)->get();
+    $products = Product::query()->latest('id')->with('category')->limit(30)->get();
     return view('welcome',compact('products'));
 });
 
+// Chi tiết sản phẩm
+Route::get('product/{slug}' ,[ProductController::class, 'detail'])->name('product.detail');
+
+// mua hàng
+Route::post('cart/add', [\App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
+Route::get('cart/list', [\App\Http\Controllers\CartController::class, 'list'])->name('cart.list');
+Route::post('order/add', [\App\Http\Controllers\OrderController::class, 'add'])->name('order.add');
+Route::get('order/list', [\App\Http\Controllers\OrderController::class, 'list'])->name('order.list');
