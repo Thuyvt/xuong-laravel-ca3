@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
+
     // order
     const ORDER_STATUS = [
         'pending' => 'Chờ xác nhận',
@@ -25,4 +26,29 @@ class Order extends Model
         'unpaid' => 'Chưa thanh toán'
     ];
     const UNPAID = 'unpaid';
+
+    protected $fillable = [
+        'user_id',
+        'user_email',
+        'user_name',
+        'user_address',
+        'user_phone',
+        'receiver_email',
+        'receiver_name',
+        'receiver_address',
+        'receiver_phone',
+        'order_status',
+        'payment_status',
+        'total_price',
+    ];
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

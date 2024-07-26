@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
             // thông tin người đặt hàng
-            $table->string('user_email');
+            $table->string( 'user_email');
             $table->string('user_name');
             $table->string('user_address');
             $table->string('user_phone');
