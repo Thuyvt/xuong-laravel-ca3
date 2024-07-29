@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,29 +36,40 @@
                 <li class="list-group-item p-3">
                     <h5 class="fw-bolder">Đơn hàng của bạn</h5>
                 </li>
-                <li class="list-group-item">
-                    <div class="row align-items-center ">
-                        <div class="col-2">
-                            <div class="d-flex justify-content-center align-items-center"
-                                 style="width: 40px; height: 40px;">
-                                <img src="img/casio1.avif" alt="" class="mw-100 mh-100">
+                @foreach($productVariants as $item)
+                    <li class="list-group-item">
+                        <div class="row align-items-center ">
+                            <div class="col-2">
+                                <div class="d-flex justify-content-center align-items-center"
+                                     style="width: 40px; height: 40px;">
+                                    @if(str_contains($item->product_img_thumb, 'products/'))
+                                        <img src="{{Storage::url($item->product_img_thumb)}}" alt="" class="mw-100 mh-100">
+                                    @else
+                                        <img src="{{$item->product_img_thumb}}" alt="" class="mw-100 mh-100">
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <span class="fw-bolder">{{$item->product_name}}</span>
+                                <span class="text-light">{{$item->product_sku}}</span>
+                                <span class="text-light">Phân loại: {{$item->variant_size_name}} x {{$item->variant_color_name}}</span>
+                            </div>
+                            <div class="col-2 text-center ">
+                                <span>{{$item->quantity}}</span>
+                            </div>
+                            <div class="col-4 text-end">
+                                <span style="text-decoration: line-through; color:gray;">
+                                    {{$item->product_price_sale ? $item->product_price : ''}}
+                                </span>
+                                <span>{{$item->product_price_sale ?: $item->product_price}}</span>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <span class="fw-bolder">Sản phẩm 1</span>
-                        </div>
-                        <div class="col-2 text-center ">
-                            <span>1</span>
-                        </div>
-                        <div class="col-4 text-end ">
-                            <span>2.500.000</span>
-                        </div>
-                    </div>
-                </li>
+                    </li>
+                @endforeach
                 <li class="list-group-item d-grid gap-2">
                     <div class="d-flex justify-content-between align-items-center ">
                         <span>Tạm tính</span>
-                        <span>7.500.000</span>
+                        <span>{{$totalAmount}}</span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center ">
                         <span>Shipping</span>
@@ -68,7 +78,7 @@
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center py-3">
                     <span class="fw-bold">Tổng</span>
-                    <span class="fw-bold text-danger ">7.500.000 </span>
+                    <span class="fw-bold text-danger ">{{$totalAmount}} </span>
                 </li>
             </ul>
         </div>

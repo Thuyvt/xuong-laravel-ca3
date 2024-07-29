@@ -13,7 +13,36 @@ class CartController extends Controller
     //
     public function list()
     {
-        return view('cart');
+        // Lấy thông tin user đang đăng nhập
+        // $user = Auth::user();
+        // Tạm thời lấy mặc định user đầu tiên
+        $user = User::query()->first();
+        // lấy thông tin giỏ hàng của người dùng
+        $cart = Cart::query()->where('user_id', $user->id)->first();
+        $user_id = $user->id;
+        $totalAmount = 0;
+        $productVariants = $cart->cartItems()
+            ->join('product_variants', 'product_variants.id', '=', 'cart_items.product_variant_id')
+            ->join('products', 'products.id', '=' , 'product_variants.product_id')
+            ->join('product_sizes', 'product_sizes.id', '=', 'product_variants.product_size_id')
+            ->join('product_colors', 'product_colors.id', '=', 'product_variants.product_color_id')
+            ->get([
+                'cart_items.product_variant_id as product_variant_id',
+                'products.name as product_name',
+                'products.sku as product_sku',
+                'products.img_thumb as product_img_thumb',
+                'products.price as product_price',
+                'products.price_sale as product_price_sale',
+                'product_sizes.name as variant_size_name',
+                'product_colors.name as variant_color_name',
+                'cart_items.quantity as quantity'
+            ]);
+//        dd($productVariants->toArray());
+        foreach (collect($productVariants) as $item) {
+            $totalAmount += $item['quantity'] * ($item['product_price_sale'] ?: $item['product_price']);
+        }
+
+        return view('cart', compact('totalAmount', 'productVariants', 'user_id'));
     }
     public function add(Request $request) {
 //        dd($request->all());
