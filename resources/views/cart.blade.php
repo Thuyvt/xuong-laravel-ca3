@@ -83,7 +83,11 @@
             </ul>
         </div>
     </div>
-    <form action="" class="container mt-4 d-flex justify-content-around">
+    <form action="{{route('order.add')}}" class="container mt-4 d-flex justify-content-around" method="POST">
+        @csrf
+        <input type="hidden" name="productVariants" value="{{$productVariants}}">
+        <input type="hidden" name="userId" value="{{$userId}}">
+        <input type="hidden" name="totalAmount" value="{{$totalAmount}}">
         <div class="col-md-5">
             <h3>Thông tin người mua hàng</h3>
             <div class="mb-3">

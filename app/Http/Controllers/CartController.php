@@ -19,7 +19,7 @@ class CartController extends Controller
         $user = User::query()->first();
         // lấy thông tin giỏ hàng của người dùng
         $cart = Cart::query()->where('user_id', $user->id)->first();
-        $user_id = $user->id;
+        $userId = $user->id;
         $totalAmount = 0;
         $productVariants = $cart->cartItems()
             ->join('product_variants', 'product_variants.id', '=', 'cart_items.product_variant_id')
@@ -42,7 +42,7 @@ class CartController extends Controller
             $totalAmount += $item['quantity'] * ($item['product_price_sale'] ?: $item['product_price']);
         }
 
-        return view('cart', compact('totalAmount', 'productVariants', 'user_id'));
+        return view('cart', compact('totalAmount', 'productVariants', 'userId'));
     }
     public function add(Request $request) {
 //        dd($request->all());

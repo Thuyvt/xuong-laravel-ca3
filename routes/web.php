@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     $products = Product::query()->latest('id')->with('category')->limit(30)->get();
     return view('welcome',compact('products'));
-});
+})->name('welcome');
 
 // Chi tiết sản phẩm
 Route::get('product/{slug}' ,[ProductController::class, 'detail'])->name('product.detail');
